@@ -41,14 +41,17 @@ core.register_globalstep(function(a_delta_time)
 	end
 end)
 
-local temp_is_protected = core.is_protected
+--wait until other mods are loaded to ensure override works with other protection mods!
+core.after(1, function()
+	local temp_is_protected = core.is_protected
 
-core.is_protected = function(a_position, a_digger_name, a_only_owner)
-	local result = temp_is_protected(a_position, a_digger_name, a_only_owner)
-	if result and a_digger_name then
-		restore_player_position(a_digger_name)
+	core.is_protected = function(a_position, a_digger_name, a_only_owner)
+		local result = temp_is_protected(a_position, a_digger_name, a_only_owner)
+		if result and a_digger_name then
+			restore_player_position(a_digger_name)
+		end
+		return result
 	end
-	return result
-end
 
-print("[MOD] repel loaded!")
+	print("[MOD] repel setup!")
+end
