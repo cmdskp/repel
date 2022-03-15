@@ -54,4 +54,4 @@ core.after(1, function()
 	end
 
 	print("[MOD] repel setup!")
-end
+end)
