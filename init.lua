@@ -41,8 +41,7 @@ core.register_globalstep(function(a_delta_time)
 	end
 end)
 
---wait until other mods are loaded to ensure override works with other protection mods!
-core.after(1, function()
+local is_protected = function()
 	local temp_is_protected = core.is_protected
 
 	core.is_protected = function(a_position, a_digger_name, a_only_owner)
@@ -54,4 +53,18 @@ core.after(1, function()
 	end
 
 	print("[MOD] repel setup!")
-end)
+end
+
+local setup = true
+
+--wait until other mods are loaded to ensure override works with other protection mods!
+if core.register_on_mods_loaded then
+	core.register_on_mods_loaded(is_protected)
+else -- for pre Minetest 5, setup on first join player
+	core.register_on_joinplayer(function()
+		if setup then
+			setup = nil
+			is_protected()
+		end
+	end)
+end
