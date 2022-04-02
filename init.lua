@@ -61,7 +61,7 @@ local setup = true
 if core.register_on_mods_loaded then
 	core.register_on_mods_loaded(is_protected)
 else -- for pre Minetest 5, setup on first join player
-	core.register_on_joinplayer(function()
+	core.register_on_prejoinplayer(function()
 		if setup then
 			setup = nil
 			is_protected()
